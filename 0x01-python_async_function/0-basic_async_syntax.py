@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-simple coroutine
+a simple coroutine
 """
 
 import asyncio
