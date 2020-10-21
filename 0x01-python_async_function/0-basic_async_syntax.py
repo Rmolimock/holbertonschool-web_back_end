@@ -2,11 +2,12 @@
 """ simple coroutine """
 
 import asyncio
+import random
 
 
 async def wait_random(max_delay: int = 10) -> float:
     """ simple coroutine """
-    import random
+    
     r = random.random() * max_delay
     await asyncio.sleep(r)
     return r
