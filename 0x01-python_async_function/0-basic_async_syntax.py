@@ -4,9 +4,9 @@
 import asyncio
 
 
-async def wait_random(max_delay = 10):
+async def wait_random(max_delay: int = 10) -> float:
     """ simple coroutine """
     import random
-    r = random.randint(0, max_delay - 1)
+    r = random.random() * max_delay
     await asyncio.sleep(r)
     return r
