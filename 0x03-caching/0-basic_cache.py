@@ -5,8 +5,8 @@ from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """ BasicCache
-    """
+    """ BasicCache """
+
     def put(self, key: str, item: str):
         """ put """
         if key and item:
