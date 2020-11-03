@@ -70,7 +70,7 @@ if __name__ == '__main__':
     cursor.execute("SELECT * FROM users")
     for each in cursor:
         string = ""
-        for k in row:
+        for k in each:
             string += "{}={}; ".format(k, each[k])
         print(string)
     cursor.close()
