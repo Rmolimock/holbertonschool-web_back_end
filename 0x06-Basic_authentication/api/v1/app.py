@@ -58,6 +58,7 @@ def Unauthorized(error) -> str:
 
 
 if __name__ == "__main__":
+    """ main """
     from os import getenv
     host = getenv("API_HOST", "0.0.0.0")
     port = getenv("API_PORT", "5000")
