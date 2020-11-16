@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ simple db class """
 
 from sqlalchemy import create_engine
