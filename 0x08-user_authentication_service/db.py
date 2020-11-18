@@ -55,7 +55,7 @@ class DB:
         except Exception:
             raise NoResultFound
 
-    def update_user(self, user_id: int, **kwargs: dict) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """ update user attrs """
         user = self.find_user_by(id=user_id)
         for attr in kwargs:
