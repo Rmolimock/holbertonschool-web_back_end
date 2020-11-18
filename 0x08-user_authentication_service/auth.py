@@ -16,6 +16,8 @@ class Auth:
 
     def register_user(self, email: str, password: str) -> User:
         """ register new user """
+        if not email or not password:
+            return
         try:
             self._db.find_user_by(email=email)
             raise ValueError(f"User {email} already exists")
@@ -25,4 +27,6 @@ class Auth:
 
 def _hash_password(password: str) -> str:
     """ create a salted hash for the password """
+    if not password:
+        return
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
