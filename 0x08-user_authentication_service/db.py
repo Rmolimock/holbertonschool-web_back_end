@@ -4,8 +4,17 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 from typing import TypeVar
 from user import Base, User
+
+
+allowed_attributes = ['id',
+                      'email',
+                      'hashed_password',
+                      'session_id',
+                      'reset_token']
 
 
 class DB:
@@ -37,7 +46,14 @@ class DB:
 
     def find_user_by(self, **kwargs: dict) -> TypeVar('User'):
         """ find user by attribute """
-        return self._session.query(User).filter_by(**kwargs).one()
+        if not kwargs:
+            raise InvalidRequestError
+        if any(attr not in allowed_attributes for attr in kwargs):
+            raise InvalidRequestError
+        try:
+            return self._session.query(User).filter_by(**kwargs).one()
+        except Exception:
+            raise NoResultFound
 
     def update_user(self, user_id: int, **kwargs: dict) -> None:
         """ update user attrs """
