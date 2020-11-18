@@ -40,3 +40,9 @@ def _hash_password(password: str) -> str:
     if not password:
         return
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+
+def _generate_uuid() -> str:
+    """ return unique id """
+    from uuid import uuid4
+    return str(uuid4())
