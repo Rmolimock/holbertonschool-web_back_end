@@ -36,3 +36,13 @@ class DB:
     def find_user_by(self, **kwargs: dict) -> TypeVar('User'):
         """ find user by attribute """
         return self._session.query(User).filter_by(**kwargs).one()
+
+    def update_user(self, user_id: int, **kwargs: dict) -> None:
+        """ update user attrs """
+        user = self.find_user_by(id=user_id)
+        for attr in kwargs:
+            if hasattr(user, attr):
+                user.attr = kwargs[attr]
+            else:
+                raise ValueError
+        self._session.commit()
