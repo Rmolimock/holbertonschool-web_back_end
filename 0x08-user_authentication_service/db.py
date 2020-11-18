@@ -44,7 +44,7 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs: dict) -> TypeVar('User'):
+    def find_user_by(self, **kwargs: dict) -> User:
         """ find user by attribute """
         if not kwargs:
             raise InvalidRequestError
