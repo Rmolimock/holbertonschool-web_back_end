@@ -31,8 +31,7 @@ def users():
 def login():
     """ route for user login """
     email, password = request.form.get('email'), request.form.get('password')
-    valid_login = auth.valid_login(email, password)
-    if valid_login:
+    if auth.valid_login(email, password):
         session_id = auth.create_session(email)
         response = jsonify({"email": f"{email}", "message": "logged in"})
         response.set_cookie('session_id', session_id)
