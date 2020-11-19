@@ -40,5 +40,59 @@ def login():
         abort(401)
 
 
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> str:
+    """ route for logging out a user """
+    session = request.cookies.get('session_id')
+    user = auth.get_user_from_session_id(session)
+    if not user:
+        abort(403)
+    else:
+        auth.destroy_session(user.id)
+        return redirect('/')
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> str:
+    """ route for getting info about a user (email) """
+    session = request.cookies.get('session_id')
+    user = auth.get_user_from_session_id(session)
+    if not user:
+        abort(403)
+    else:
+        return jsonify({"email": user.email}), 200
+
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token() -> str:
+    """ request a reset token from the server
+        - this function mimics what would actually be a message
+        - to the customer email address
+    """
+    email = request.form.get('email')
+    user = auth.create_session(email)
+    if not user:
+        abort(403)
+    else:
+        reset_token = auth.get_reset_password_token(email)
+        return jsonify({"email": f"{email}", "reset_token": f"{reset_token}"})
+
+
+@app.route('/reset_password', methods=['PUT'], strict_slashes=False)
+def update_password() -> str:
+    """ pass back reset token (exercise) """
+    email = request.form.get('email')
+    new_password = request.form.get('new_password')
+    reset_token = request.form.get('reset_token')
+    if not email or not new_password or not reset_token:
+        abort(403)
+    try:
+        auth.update_password(reset_token, new_password)
+        return jsonify({"email": f"{email}",
+                        "message": "Password updated"}), 200
+    except Exception:
+        abort(403)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
