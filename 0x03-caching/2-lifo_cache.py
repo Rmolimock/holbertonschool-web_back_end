@@ -1,18 +1,18 @@
 #!/usr/bin/python3
-""" LIFO """
+""" LIFOCache puts and gets data into a cache """
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LIFOCache(BaseCaching):
-    """ LIFO """
+    """ puts and gets items into a cache in LIFO order """
 
     def __init__(self):
-        """ init """
+        """ inherit from parent and init keys """
         super().__init__()
         self.keys = []
 
     def put(self, key, item):
-        """ put """
+        """ put a new item into the cash """
         if item is not None and key is not None:
             self.cache_data[key] = item
             if key in self.keys:
@@ -25,7 +25,7 @@ class LIFOCache(BaseCaching):
                 print(f"DISCARD: {discarded}")
 
     def get(self, key):
-        """ get """
+        """ get an item from the cache """
         if not key in self.cache_data or not key:
             return None
         return self.cache_data[key]

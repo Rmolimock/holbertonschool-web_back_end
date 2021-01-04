@@ -1,18 +1,18 @@
 #!/usr/bin/python3
-""" FIFOCache """
+""" FIFOCACHE puts and gets data into a cache """
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
-    """ FIFO """
+    """ puts and gets items into a cache in FIFO order """
 
     def __init__(self):
-        """ Init """
+        """ inherit from parent and init keys """
         super().__init__()
         self.keys = []
 
     def put(self, key, item):
-        """ put """
+        """ put a new item into the cash """
         if item is not None and key is not None:
             self.cache_data[key] = item
             if not key in self.keys:
@@ -23,7 +23,7 @@ class FIFOCache(BaseCaching):
                 print(f"DISCARD: {discarded}")
 
     def get(self, key):
-        """ get"""
+        """ get an item from the cache """
         if not key in self.cache_data or not key:
             return None
         return self.cache_data[key]
