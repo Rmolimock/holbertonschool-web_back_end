@@ -26,6 +26,6 @@ class LIFOCache(BaseCaching):
 
     def get(self, key):
         """ get an item from the cache """
-        if not key in self.cache_data or not key:
+        if key not in self.cache_data or not key:
             return None
         return self.cache_data[key]
