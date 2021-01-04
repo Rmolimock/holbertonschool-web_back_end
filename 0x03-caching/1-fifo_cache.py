@@ -1,31 +1,29 @@
 #!/usr/bin/python3
-""" FIFO """
-
-from queue import Queue
-
-BaseCaching = __import__("base_caching").BaseCaching
+""" FIFOCache """
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
-    """ FIFOCache
-    """
+    """ FIFO """
+
     def __init__(self):
-        """ init """
+        """ Init """
         super().__init__()
-        self.q = Queue()
+        self.keys = []
 
-    def put(self, key: str, item: str):
+    def put(self, key, item):
         """ put """
-        if not key or not item:
-            return
-        if key not in self.cache_data:
-            self.q.put(key)
-        self.cache_data[key] = item
-        if BaseCaching.MAX_ITEMS < self.q.qsize():
-            key_removed = self.q.get()
-            del self.cache_data[key_removed]
-            print("DISCARD: {}".format(key_removed))
+        if item is not None and key is not None:
+            self.cache_data[key] = item
+            if not key in self.keys:
+                self.keys.append(key)
+            if len(self.keys) > BaseCaching.MAX_ITEMS:
+                discarded = self.keys.pop(0)
+                del self.cache_data[discarded]
+                print(f"DISCARD: {discarded}")
 
-    def get(self, key: str) -> str:
-        """ get cache data from self.cache_data """
-        return self.cache_data[key] if key in self.cache_data else None
+    def get(self, key):
+        """ get"""
+        if not key in self.cache_data or not key:
+            return None
+        return self.cache_data[key]

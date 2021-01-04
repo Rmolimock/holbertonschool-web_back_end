@@ -1,17 +1,17 @@
 #!/usr/bin/python3
-""" basic cahing """
-
-from base_caching import BaseCaching
+""" BasicCache """
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class BasicCache(BaseCaching):
     """ BasicCache """
-
-    def put(self, key: str, item: str):
+    def put(self, key, item):
         """ put """
-        if key and item:
+        if key is not None and item is not None:
             self.cache_data[key] = item
 
-    def get(self, key: str) -> str:
+    def get(self, key):
         """ get """
-        return self.cache_data[key] if key in self.cache_data else None
+        if key not in self.cache_data or not key:
+            return None
+        return self.cache_data[key]

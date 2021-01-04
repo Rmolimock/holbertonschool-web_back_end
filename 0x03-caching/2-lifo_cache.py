@@ -1,27 +1,31 @@
 #!/usr/bin/python3
 """ LIFO """
-
-BaseCaching = __import__("base_caching").BaseCaching
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LIFOCache(BaseCaching):
-    """ LIFOCache
-    """
+    """ LIFO """
+
     def __init__(self):
-        """ initiate instance variable """
+        """ init """
         super().__init__()
-        self.last = ''
+        self.keys = []
 
-    def put(self, key: str, item: str):
+    def put(self, key, item):
         """ put """
-        if key and item:
+        if item is not None and key is not None:
             self.cache_data[key] = item
-        if BaseCaching.MAX_ITEMS < len(self.cache_data):
-            self.cache_data.pop(self.last)
-            print('DISCARD:', self.last)
-        if key:
-            self.last = key
+            if key in self.keys:
+                self.keys.append(self.keys.pop(self.keys.index(key))) \
+            else:
+                self.keys.append(key)
+            if BaseCaching.MAX_ITEMS < len(self.keys):
+                discarded = self.keys.pop(len(self.keys) - 2)
+                del self.cache_data[discarded]
+                print(f"DISCARD: {discarded}")
 
-    def get(self, key: str) -> str:
+    def get(self, key):
         """ get """
-        return self.cache_data[key] if key in self.cache_data else None
+        if not key in self.cache_data or not key:
+            return None
+        return self.cache_data[key]
