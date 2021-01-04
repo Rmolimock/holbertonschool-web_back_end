@@ -15,7 +15,7 @@ class FIFOCache(BaseCaching):
         """ put a new item into the cash """
         if item is not None and key is not None:
             self.cache_data[key] = item
-            if not key in self.keys:
+            if key not in self.keys:
                 self.keys.append(key)
             if len(self.keys) > BaseCaching.MAX_ITEMS:
                 discarded = self.keys.pop(0)
@@ -24,6 +24,6 @@ class FIFOCache(BaseCaching):
 
     def get(self, key):
         """ get an item from the cache """
-        if not key in self.cache_data or not key:
+        if key not in self.cache_data or not key:
             return None
         return self.cache_data[key]
