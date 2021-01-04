@@ -16,7 +16,7 @@ class LIFOCache(BaseCaching):
         if item is not None and key is not None:
             self.cache_data[key] = item
             if key in self.keys:
-                self.keys.append(self.keys.pop(self.keys.index(key))) \
+                self.keys.append(self.keys.pop(self.keys.index(key)))
             else:
                 self.keys.append(key)
             if BaseCaching.MAX_ITEMS < len(self.keys):
