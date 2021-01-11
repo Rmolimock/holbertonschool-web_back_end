@@ -25,6 +25,10 @@ def view_one_user(user_id: str = None) -> str:
       - User object JSON represented
       - 404 if the User ID doesn't exist
     """
+    if user_id == "me":
+        if not request.current_user:
+            abort(404)
+        return jsonify(request.current_user.to_json())
     if user_id is None:
         abort(404)
     user = User.get(user_id)
@@ -63,25 +67,25 @@ def create_user() -> str:
       - User object JSON represented
       - 400 if can't create the new User
     """
-    rj = None
+    json_repr = None
     error_msg = None
     try:
-        rj = request.get_json()
+        json_repr = request.get_json()
     except Exception as e:
-        rj = None
-    if rj is None:
+        json_repr = None
+    if json_repr is None:
         error_msg = "Wrong format"
-    if error_msg is None and rj.get("email", "") == "":
+    if error_msg is None and json_repr.get("email", "") == "":
         error_msg = "email missing"
-    if error_msg is None and rj.get("password", "") == "":
+    if error_msg is None and json_repr.get("password", "") == "":
         error_msg = "password missing"
     if error_msg is None:
         try:
             user = User()
-            user.email = rj.get("email")
-            user.password = rj.get("password")
-            user.first_name = rj.get("first_name")
-            user.last_name = rj.get("last_name")
+            user.email = json_repr.get("email")
+            user.password = json_repr.get("password")
+            user.first_name = json_repr.get("first_name")
+            user.last_name = json_repr.get("last_name")
             user.save()
             return jsonify(user.to_json()), 201
         except Exception as e:
@@ -107,16 +111,16 @@ def update_user(user_id: str = None) -> str:
     user = User.get(user_id)
     if user is None:
         abort(404)
-    rj = None
+    json_repr = None
     try:
-        rj = request.get_json()
+        json_repr = request.get_json()
     except Exception as e:
-        rj = None
-    if rj is None:
+        json_repr = None
+    if json_repr is None:
         return jsonify({'error': "Wrong format"}), 400
-    if rj.get('first_name') is not None:
-        user.first_name = rj.get('first_name')
-    if rj.get('last_name') is not None:
-        user.last_name = rj.get('last_name')
+    if json_repr.get('first_name'):
+        user.first_name = json_repr.get('first_name')
+    if json_repr.get('last_name'):
+        user.last_name = json_repr.get('last_name')
     user.save()
     return jsonify(user.to_json()), 200
