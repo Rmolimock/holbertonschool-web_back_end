@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This module contains one class, Auth
+auth class module docstring for holberton checker
 """
 
 from flask import request
@@ -9,12 +9,14 @@ from typing import List, TypeVar
 
 
 class Auth():
-    """ Auth class """
+    """
+    auth class module docstring for holberton checker
+    """
     def __init__(self):
         pass
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ check if path is an exception and does not require authentication
+        """ auth class module docstring for holberton checker
         """
         if not path or not excluded_paths or excluded_paths == []:
             return True
@@ -25,25 +27,25 @@ class Auth():
                 excluded = excluded[:-1]
                 if path.startswith(excluded):
                     return False
-            if path == excluded or path in excluded:
+            if path in excluded or path == excluded:
                 return False
         return True
 
     def authorization_header(self, request=None) -> str:
-        """ return the authorization value of the request """
-        if not request or "Authorization" not in request.headers:
-            return None
-        else:
+        """ rauth class module docstring for holberton checker """
+        if request and "Authorization" in request.headers:
             return request.headers.get("Authorization")
+        else:
+            return None
 
     def current_user(self, request=None) -> TypeVar('User'):
-        """ return None for now """
+        """ auth class module docstring for holberton checker """
         return None
 
     def session_cookie(self, request=None):
-        """ return the cookie value from a request """
-        if not request:
-            return None
+        """ auth class module docstring for holberton checker """
         from os import getenv
-        session_name = getenv("SESSION_NAME")
-        return request.cookies.get(session_name, None)
+        if request:
+            session_name = getenv("SESSION_NAME")
+            return request.cookies.get(session_name, None)
+        return None
