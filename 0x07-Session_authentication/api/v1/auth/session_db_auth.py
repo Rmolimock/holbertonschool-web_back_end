@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-This module contains one class, SessionAuth
+This module is for session DB auth which stores sessions in db
 """
 
 from api.v1.auth.session_exp_auth import SessionExpAuth
@@ -9,20 +9,19 @@ from models.user_session import UserSession
 
 
 class SessionDBAuth(SessionExpAuth):
-    """ SessionDBAuth verifies session_id against those stored in storage """
+    """ This module is for session DB auth which stores sessions in db """
     def create_session(self, user_id=None):
-        """ create a session and store session_id in storage """
+        """ This module is for session DB auth which stores sessions in db """
         if not user_id:
             return None
         session_id = super().create_session(user_id)
         if not session_id:
             return
-        user = UserSession(user_id=user_id, session_id=session_id)
-        user.save()
+        UserSession(user_id=user_id, session_id=session_id).save()
         return session_id
 
     def user_id_for_session_id(self, session_id=None):
-        """ get user_id associated with session_id from storage """
+        """ This module is for session DB auth which stores sessions in db """
         if not session_id:
             return None
         try:
@@ -32,13 +31,13 @@ class SessionDBAuth(SessionExpAuth):
         if not user_list:
             return None
         from datetime import datetime, timedelta
-        start = timedelta(seconds=self.session_duration)
-        if datetime.now() > user_list[0].created_at + start:
+        start_time = timedelta(seconds=self.session_duration)
+        if user_list[0].created_at + start_time < datetime.now():
             return None
         return user_list[0].user_id
 
     def destroy_session(self, request=None):
-        """ destroy session of given user_id in request """
+        """ This module is for session DB auth which stores sessions in db """
         from os import getenv
         if not request:
             return None
