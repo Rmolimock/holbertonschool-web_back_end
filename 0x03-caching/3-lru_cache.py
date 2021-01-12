@@ -27,7 +27,7 @@ class LRUCache(BaseCaching):
             if BaseCaching.MAX_ITEMS < len(self.keys):
                 i = self.keys.pop(0)
                 del self.cache_data[i]
-                print(f"DISCARD: {:i}")
+                print(f"DISCARD: {i}")
 
     def get(self, key):
         """ LRU Cache class docstring for holberton checker
